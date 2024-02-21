@@ -21,4 +21,16 @@ class UserUtilisateur extends Authenticatable
         'email',
         'MotDePasse',
     ];
+
+
+    protected $hidden = [
+        'MotDePasse',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
 }
