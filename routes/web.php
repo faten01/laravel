@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserUtilisateurController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('user_utilisateurs', 'UserUtilisateurController');
+Route::resource('user_utilisateurs', UserUtilisateurController::class)->only(['create', 'store']);
 
 
 require __DIR__.'/auth.php';

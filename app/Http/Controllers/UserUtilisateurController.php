@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserUtilisateur;
 use Illuminate\Http\Request;
-use App\UserUtilisateur;
+use App\UserUtilisateurs;
 
 class UserUtilisateurController extends Controller
 {
@@ -20,7 +21,7 @@ class UserUtilisateurController extends Controller
      */
     public function create()
     {
-        //
+        return view('user_utilisateurs.create');
     }
 
     /**
@@ -28,7 +29,31 @@ class UserUtilisateurController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $request->validate([
+            'Nom' => 'required',
+            'Prenom' => 'required',
+            'Email' => 'required',
+            'Telephone' => 'required',
+            'Role' => 'required|in:Exposant,Visiteur,Admin',
+            'MotDePasse' => 'required',
+            // Add other validation rules as needed
+        ]);
+
+        // Create a new user
+        $user = new UserUtilisateur([
+            'Nom' => $request->input('Nom'),
+            'Prenom' => $request->input('Prenom'),
+            'Email' => $request->input('Email'),
+            'Telephone' => $request->input('Telephone'),
+            'Role' => $request->input('Role'),
+            'MotDePasse' => bcrypt($request->input('MotDePasse')), // Hash the password
+   
+        ]);
+
+        $user->save();
+        return redirect('/UserUtilisateurs')->with('success', 'User saved!');
+    
     }
 
     /**
