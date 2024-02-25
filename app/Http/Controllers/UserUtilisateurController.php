@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\UserUtilisateur;
 use Illuminate\Http\Request;
 use App\UserUtilisateurs;
+use PhpParser\Node\Stmt\Else_;
 
 class UserUtilisateurController extends Controller
 {
@@ -13,7 +14,7 @@ class UserUtilisateurController extends Controller
      */
     public function index()
     {
-        //
+        return UserUtilisateur::all();
     }
 
     /**
@@ -21,47 +22,37 @@ class UserUtilisateurController extends Controller
      */
     public function create()
     {
-        return view('user_utilisateurs.create');
+        return ('user_utilisateurs.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+{
+    $user = UserUtilisateur::create($request->all());
 
-        $request->validate([
-            'Nom' => 'required',
-            'Prenom' => 'required',
-            'Email' => 'required',
-            'Telephone' => 'required',
-            'Role' => 'required|in:Exposant,Visiteur,Admin',
-            'MotDePasse' => 'required',
-            // Add other validation rules as needed
-        ]);
+    return response()->json($user, 201);
+}
 
-        // Create a new user
-        $user = new UserUtilisateur([
-            'Nom' => $request->input('Nom'),
-            'Prenom' => $request->input('Prenom'),
-            'Email' => $request->input('Email'),
-            'Telephone' => $request->input('Telephone'),
-            'Role' => $request->input('Role'),
-            'MotDePasse' => bcrypt($request->input('MotDePasse')), // Hash the password
-   
-        ]);
-
-        $user->save();
-        return redirect('/UserUtilisateurs')->with('success', 'User saved!');
+       
     
-    }
+    
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(UserUtilisateur $user,string $identifier)
     {
-        //
+        
+        $user = UserUtilisateur::where('Nom', $identifier)->first();
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        else{
+    
+        return response()->json($user);
+        }
     }
 
     /**
@@ -75,16 +66,45 @@ class UserUtilisateurController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, UserUtilisateur $user,string $identifier)
+
     {
-        //
+
+         // Find the user by the given identifier
+    $user = UserUtilisateur::where('Nom', $identifier)->first();
+
+    // Check if the user exists
+    if (!$user) {
+        return response()->json(['error' => 'User not found'], 404);
     }
+
+    // Update specific attributes
+    if ($request->has('Nom')) {
+        $user->Nom = $request->input('Nom');
+    }
+
+    if ($request->has('Prenom')) {
+        $user->Prenom = $request->input('Prenom');
+    }
+
+    // Update other attributes similarly
+
+    // Save the changes
+    $user->save();
+
+    // Return the updated user
+    return response()->json($user);    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(UserUtilisateur $user,string $identifier)
+    
     {
-        //
+        $user = UserUtilisateur::where('Nom', $identifier)->first();
+
+        $user->delete();
+
+    return response()->json(null, 204);
     }
 }
