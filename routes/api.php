@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\evenementController;
+use App\Http\Controllers\Api\foireController;
 use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\standController;
 use App\Http\Controllers\UserUtilisateurController;
@@ -51,6 +52,14 @@ Route::get('/reservations/{identifier}',[ReservationController::class,'show']);
 Route::get('/reservations',[ReservationController::class,'index']);
 Route::put('/reservations/{identifier}', [ReservationController::class,'update']);
 Route::delete('/reservations/{identifier}', [ReservationController::class,'destroy']);
+
+
+
+Route::post('/foire',[foireController::class,'store']);
+Route::get('/foire/{identifier}',[foireController::class,'show']);
+Route::get('/foire',[foireController::class,'index']);
+Route::put('/foire/{identifier}', [foireController::class,'update']);
+Route::delete('/foire/{identifier}', [foireController::class,'destroy']);
 
 
 

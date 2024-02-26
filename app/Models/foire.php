@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class foire extends Model
 {
     use HasFactory;
+    
+
+    protected $table = 'foire'; 
+
+    protected $primaryKey = 'id';
+
     protected $fillable = [
         'name',
         'email',
