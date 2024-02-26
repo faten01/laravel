@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('stands', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id'); // Reference to the user table
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('description')->nullable();
             $table->string('number');
             $table->double('surface');

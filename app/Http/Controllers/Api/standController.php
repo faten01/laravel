@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\stand;
+use Illuminate\Http\Request;
+use App\Models\UserUtilisateur;
+use App\Http\Controllers\Controller;
 
 class standController extends Controller
 {
@@ -15,15 +16,47 @@ class standController extends Controller
     {
         return stand::all();
     }
+   
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $stand = stand::create($request->all());
-
-        return response()->json($stand, 201);
+        try {
+            // Validate the request data
+            $request->validate([
+                'user_id' => 'required|exists:user_utilisateurs,UserID',
+                'description' => 'nullable|string|max:255',
+                'number' => 'required|string|max:255',
+                'surface' => 'required|numeric',
+                'status_reservation' => 'required|in:free,reserved,occupied',
+                // ... other validation rules
+            ]);
+    
+            // Retrieve the corresponding user
+            $user = UserUtilisateur::findOrFail($request->input('user_id'));
+    
+            // Create a new stand instance
+            $stand = new Stand([
+                'user_id' => $request->input('user_id'),
+                'description' => $request->input('description'),
+                'number' => $request->input('number'),
+                'surface' => $request->input('surface'),
+                'status_reservation' => $request->input('status_reservation'),
+                // ... other fields
+            ]);
+    
+            // Save the stand to the database
+            $stand->save();
+    
+            // Return a response
+            return response()->json($stand);
+    
+        } catch (\Exception $e) {
+            // Log or handle the exception
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -53,12 +86,12 @@ class standController extends Controller
         }
     
         // Update specific attributes
-        if ($request->has('Number')) {
-            $stand->Number = $request->input('Number');
+        if ($request->has('number')) {
+            $stand->number = $request->input('number');
         }
     
         if ($request->has('status_reservation')) {
-            $stand->Status = $request->input('status_reservation');
+            $stand->status_reservation = $request->input('status_reservation');
         }
     
         // Update other attributes similarly

@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\UserUtilisateur;
 use Illuminate\Http\Request;
-use App\UserUtilisateurs;
-use PhpParser\Node\Stmt\Else_;
 
 class UserUtilisateurController extends Controller
 {
@@ -20,10 +18,7 @@ class UserUtilisateurController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        return ('user_utilisateurs.create');
-    }
+   
 
     /**
      * Store a newly created resource in storage.

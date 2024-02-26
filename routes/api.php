@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\evenementController;
+use App\Http\Controllers\Api\standController;
 use App\Http\Controllers\UserUtilisateurController;
+use App\Models\stand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +30,19 @@ Route::put('/users/{identifier}', [UserUtilisateurController::class,'update']);
 Route::delete('users/{identifier}', [UserUtilisateurController::class,'destroy']);
 
 
+
+Route::post('/stands',[standController::class,'store']);
+Route::get('/stands/{identifier}',[standController::class,'show']);
+Route::get('/stands',[StandController::class,'index']);
+Route::put('/stands/{identifier}', [standController::class,'update']);
+Route::delete('/stands/{identifier}', [StandController::class,'destroy']);
+
+
+Route::post('/evenements',[evenementController::class,'store']);
+Route::get('/evenements/{identifier}',[evenementController::class,'show']);
+Route::get('/evenements',[evenementController::class,'index']);
+Route::put('/evenements/{identifier}', [evenementController::class,'update']);
+Route::delete('/evenements/{identifier}', [evenementController::class,'destroy']);
 
 
 
