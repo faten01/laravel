@@ -20,6 +20,15 @@ return new class extends Migration
             $table->enum('Role', ['Exposant', 'Visiteur', 'Admin']);
             $table->string('MotDePasse')->default('');
             $table->timestamps();
+
+          
+        });
+
+        Schema::table('user_utilisateurs', function (Blueprint $table) {
+            $table->string('api_token', 80)->after('MotDePasse') // adjust the column definition as needed
+                  ->unique()
+                  ->nullable()
+                  ->default(null);
         });
     }
 

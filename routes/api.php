@@ -1,13 +1,15 @@
 <?php
 
-use App\Http\Controllers\Api\evenementController;
-use App\Http\Controllers\Api\foireController;
-use App\Http\Controllers\Api\ReservationController;
-use App\Http\Controllers\Api\standController;
-use App\Http\Controllers\UserUtilisateurController;
 use App\Models\stand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Api\foireController;
+use App\Http\Controllers\Api\standController;
+use App\Http\Controllers\Api\evenementController;
+use App\Http\Controllers\Api\ReservationController;
+use App\Http\Controllers\UserUtilisateurController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +25,14 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [UserUtilisateurController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/dashboard', [AuthController::class, 'dashboard']);
+    Route::post('/logout', [UserUtilisateurController::class, 'logout']);});
+
 
 Route::get('users1', [UserUtilisateurController::class,'create']) ;
 Route::post('/users',[UserUtilisateurController::class,'store']);

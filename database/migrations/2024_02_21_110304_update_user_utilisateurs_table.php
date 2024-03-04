@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('user_utilisateurs', function (Blueprint $table) {
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
+           
         });
     }
 

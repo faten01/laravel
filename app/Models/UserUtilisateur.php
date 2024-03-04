@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 
 
+
 class UserUtilisateur extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -18,9 +19,10 @@ class UserUtilisateur extends Authenticatable
     protected $primaryKey = 'UserID';
 
     protected $fillable = [
-        'nom',
-        'email',
+        'Nom',
+        'Email',
         'MotDePasse',
+        'api_token'
     ];
 
 
@@ -31,7 +33,7 @@ class UserUtilisateur extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'MotDePasse' => 'hashed',
     ];
 
 }

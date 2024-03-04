@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UserUtilisateur;
 use Illuminate\Http\Request;
+use App\Models\UserUtilisateur;
+use Illuminate\Support\Facades\Hash;
 
 class UserUtilisateurController extends Controller
 {
@@ -102,4 +103,58 @@ class UserUtilisateurController extends Controller
 
     return response()->json(null, 204);
     }
+
+    /*public function login(Request $request)
+    {
+        $user= UserUtilisateur::where('Email', $request->email)->first();
+        // print_r($data);
+            if (!$user || !Hash::check($request->MotDePasse, $user->MotDePasse)) {
+                return response([
+                    'message' => ['These credentials do not match our records.']
+                ], 404);
+            }
+        
+             $token = $user->createToken('my-app-token')->plainTextToken;
+        
+            $response = [
+                'user' => $user,
+                'token' => $token
+            ];
+        
+             return response($response, 201);
+    }*/
+    public function login(Request $request)
+{
+    $user = UserUtilisateur::where('Email', $request->Email)->first();
+
+    if (!$user) {
+        return response([
+            'message' => ['User not found.']
+        ], 404);
+    }
+
+    if (!Hash::check($request->MotDePasse, $user->MotDePasse)) {
+        return response([
+            'message' => ['These credentials do not match our records.']
+        ], 401);
+    }
+
+    $token = $user->createToken('my-app-token')->plainTextToken;
+
+    $response = [
+        'user' => $user,
+        'token' => $token
+    ];
+
+    return response($response, 201);
+}
+
+public function logout(Request $request)
+    {
+        $request->user()->tokens()->delete();
+
+        return response()->json(['message' => 'You have logged out successfully!']);
+    }    
+
+
 }
